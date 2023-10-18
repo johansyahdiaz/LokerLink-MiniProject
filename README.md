@@ -1,1 +1,1 @@
-# LokerLink-MiniProject
+# PeluangKarir-MiniProject
