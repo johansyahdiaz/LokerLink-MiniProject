@@ -4,6 +4,7 @@ import Homepage from "../pages/homePage";
 import LoginPage from "../pages/auth/login";
 import RegisterPage from "../pages/auth/register";
 import VacancyForm from "../pages/formVacancy";
+import Dashboard from "../pages/dashboard";
 
 export default function Router() {
   // const { token } = useToken();
@@ -36,6 +37,10 @@ export default function Router() {
     {
       path: "/vacancy-form",
       element: <VacancyForm />,
+    },
+    {
+      path: "/profile-dashboard",
+      element: <Dashboard />,
     },
     {
       path: "*",
