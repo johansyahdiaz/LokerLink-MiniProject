@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/navbar";
+import { Toast } from "../utils/swalToast";
+import { getSpesificJobVacancy, deleteJobVacancy } from "../utils/apis/jobVacancy/api";
 
 function Dashboard() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [companyName, setCompanyName] = useState("Nama Perusahaan Anda");
   const [companyDescription, setCompanyDescription] = useState("Deskripsi perusahaan Anda.");
+  const [jobs, setJobs] = useState([]);
 
-  const [jobs, setJobs] = useState([
-    { id: 1, title: "Lowongan Pekerjaan 1", location: "Jakarta", type: "Full-time" },
-    { id: 2, title: "Lowongan Pekerjaan 2", location: "Surabaya", type: "Part-time" },
-  ]);
+  async function fetchData() {
+    try {
+      const result = await getSpesificJobVacancy();
+      setJobs(result);
+    } catch (error) {
+      Toast.fire(error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+
+    const storedCompanyName = localStorage.getItem("companyName");
+    if (storedCompanyName) {
+      setCompanyName(storedCompanyName);
+    }
+
+    const storedCompanyDescription = localStorage.getItem("companyDescription");
+    if (storedCompanyDescription) {
+      setCompanyDescription(storedCompanyDescription);
+    }
+  }, []);
 
   const handleEditProfile = () => {
     setIsEditingProfile(!isEditingProfile);
@@ -18,7 +39,18 @@ function Dashboard() {
 
   const handleSaveProfile = () => {
     setIsEditingProfile(false);
-    // Implement logic to save the edited profile data
+    localStorage.setItem("companyName", companyName);
+    localStorage.setItem("companyDescription", companyDescription);
+  };
+
+  const handleDelete = async (jobVacancyId) => {
+    try {
+      await deleteJobVacancy(jobVacancyId);
+      Toast.fire({ icon: "success", title: "Successfully deleted product" });
+      fetchData();
+    } catch (error) {
+      Toast.fire({ icon: "error", title: error.message });
+    }
   };
 
   return (
@@ -77,20 +109,27 @@ function Dashboard() {
                 <th>Title</th>
                 <th>Location</th>
                 <th>Type</th>
+                <th>Application Deadline</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {jobs.map((job) => (
-                <tr key={job.id}>
-                  <td>{job.title}</td>
-                  <td>{job.location}</td>
-                  <td>{job.type}</td>
+              {jobs.map((Job) => (
+                <tr key={Job.jobVacancyId}>
+                  <td>{Job.jobTitle}</td>
+                  <td>{Job.jobLocation}</td>
+                  <td>{Job.jobType}</td>
+                  <td>{Job.applicationDeadline}</td>
                   <td>
-                    <Link to={`/edit-job/${job.id}`} className="btn btn-primary mr-2">
+                    <Link to={`/edit-job/${Job.jobVacancyId}`} className="btn btn-primary mr-2">
                       Edit
                     </Link>
-                    <button className="btn btn-danger">Delete</button>
+                    <button onClick={() => handleDelete(Job.jobVacancyId)} className="btn btn-danger">
+                      Delete
+                    </button>
+                    <Link to={`/view-job/${Job.jobVacancyId}`} className="btn btn-secondary ml-2">
+                      View Job Vacancy
+                    </Link>
                   </td>
                 </tr>
               ))}

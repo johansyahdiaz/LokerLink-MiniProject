@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "../components/navbar";
 import CategoryCard from "../components/categoryCard";
-import categories from "../utils/constants/category";
+import { jobCategories, provinces } from "../utils/constants/constant.js";
 
 function Homepage() {
   const [showMore, setShowMore] = useState(false);
@@ -29,39 +29,12 @@ function Homepage() {
                 </div>
               </div>
               <select className="select select-bordered join-item">
-                <option defaultValue>Pilih Lokasi</option>
-                <option>Aceh</option>
-                <option>Sumatera Utara</option>
-                <option>Sumatera Barat</option>
-                <option>Riau</option>
-                <option>Jambi</option>
-                <option>Sumatera Selatan</option>
-                <option>Bengkulu</option>
-                <option>Lampung</option>
-                <option>Banten</option>
-                <option>Jawa Barat</option>
-                <option>Jawa Tengah</option>
-                <option>DI Yogyakarta</option>
-                <option>Jawa Timur</option>
-                <option>Bali</option>
-                <option>Nusa Tenggara Barat</option>
-                <option>Nusa Tenggara Timur</option>
-                <option>Kalimantan Barat</option>
-                <option>Kalimantan Tengah</option>
-                <option>Kalimantan Selatan</option>
-                <option>Kalimantan Timur</option>
-                <option>Kalimantan Utara</option>
-                <option>Sulawesi Utara</option>
-                <option>Gorontalo</option>
-                <option>Sulawesi Tengah</option>
-                <option>Sulawesi Selatan</option>
-                <option>Sulawesi Tenggara</option>
-                <option>Sulawesi Barat</option>
-                <option>Maluku</option>
-                <option>Maluku Utara</option>
-                <option>Papua Barat</option>
-                <option>Papua</option>
-                <option>Lainnya</option>
+                <option value="">Select Location</option>
+                {provinces.map((province) => (
+                  <option key={province} value={province}>
+                    {province}
+                  </option>
+                ))}
               </select>
 
               <div className="indicator">
@@ -75,7 +48,7 @@ function Homepage() {
       <div className="category-card mt-20 text-center">
         <h2 className="text-center text-2xl">Category</h2>
         <div className="category-card-container">
-          <CategoryCard categories={categories} showMore={showMore} />
+          <CategoryCard categories={jobCategories} showMore={showMore} />
         </div>
         <button onClick={toggleShowMore} className="btn btn-primary mt-4 mx-auto ">
           {showMore ? "Show Less" : "Show More"}
