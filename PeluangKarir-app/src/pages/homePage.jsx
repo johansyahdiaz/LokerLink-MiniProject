@@ -90,10 +90,9 @@ function Homepage() {
       <div className="jobs-card mt-20">
         <h2 className="text-center text-2xl">Featured Jobs</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style={{ padding: "0px 85px" }}>
-          {featuredJobs.map((job) => (
-            <JobCard key={job.jobVacancyId} job={job} />
-          ))}
+          {Array.isArray(featuredJobs) ? featuredJobs.map((job) => <JobCard key={job.jobVacancyId} job={job} />) : null}
         </div>
+
         <div className="text-center">
           <Link to="/job-catalog">
             <button className="btn btn-primary mt-4 mx-auto">{showMore ? "Show Less" : "Show More"}</button>
