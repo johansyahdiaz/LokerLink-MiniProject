@@ -72,19 +72,21 @@ function JobCatalog() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const filteredJobs = jobVacancies
-    .filter((job) => {
-      return (
-        (!searchText || job.jobTitle.toLowerCase().includes(searchText.toLowerCase())) &&
-        (!filters.jobCategory || job.jobCategory === filters.jobCategory) &&
-        (!filters.jobType || job.jobType === filters.jobType) &&
-        (!filters.jobLocation || job.jobLocation === filters.jobLocation) &&
-        (!filters.experience || job.experience === filters.experience) &&
-        (!filters.education || job.education === filters.education) &&
-        (!filters.disabilitas || job.disabilitas)
-      );
-    })
-    .slice(indexOfFirstItem, indexOfLastItem);
+  const filteredJobs = Array.isArray(jobVacancies)
+    ? jobVacancies
+        .filter((job) => {
+          return (
+            (!searchText || job.jobTitle.toLowerCase().includes(searchText.toLowerCase())) &&
+            (!filters.jobCategory || job.jobCategory === filters.jobCategory) &&
+            (!filters.jobType || job.jobType === filters.jobType) &&
+            (!filters.jobLocation || job.jobLocation === filters.jobLocation) &&
+            (!filters.experience || job.experience === filters.experience) &&
+            (!filters.education || job.education === filters.education) &&
+            (!filters.disabilitas || job.disabilitas)
+          );
+        })
+        .slice(indexOfFirstItem, indexOfLastItem)
+    : [];
 
   return (
     <>
