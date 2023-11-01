@@ -5,6 +5,7 @@ import { jobCategories, provinces } from "../utils/constants/constant.js";
 import JobCard from "../components/jobCard"; // Import JobCard
 import { getJobVacancy } from "../utils/apis/jobVacancy/api"; // Import fungsi getJobVacancy
 import { Link } from "react-router-dom";
+import { Toast } from "../utils/swalToast";
 
 function Homepage() {
   const [showMore, setShowMore] = useState(false);
@@ -20,7 +21,7 @@ function Homepage() {
         const result = await getJobVacancy({ limit: 10, sort: "desc" });
         setFeaturedJobs(result);
       } catch (error) {
-        console.error(error);
+        Toast.fire({ icon: "error", title: error.message });
       }
     }
 
