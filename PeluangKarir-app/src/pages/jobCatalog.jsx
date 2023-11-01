@@ -114,7 +114,14 @@ function JobCatalog() {
           </button>
           {isFilterOpen && (
             <div className="flex space-x-4 mb-4">
-              <select value={filters.jobCategory} onChange={(e) => setFilters({ ...filters, jobCategory: e.target.value })} className="px-4 py-2 border rounded-lg">
+              <select
+                value={filters.jobCategory}
+                onChange={(e) => {
+                  setFilters({ ...filters, jobCategory: e.target.value });
+                  applyFilters(); // Panggil applyFilters saat filter berubah
+                }}
+                className="px-4 py-2 border rounded-lg"
+              >
                 <option value="">Select Category</option>
                 {jobCategories.map((category) => (
                   <option key={category.id} value={category.title}>
