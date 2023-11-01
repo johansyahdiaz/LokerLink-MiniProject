@@ -10,6 +10,6 @@ export const formVacancySchema = z.object({
   experience: z.string().min(1, { message: "Please enter a valid experience" }),
   education: z.string().min(1, { message: "Please enter a valid education" }),
   applicationDeadline: z.string().min(1, { message: "Please enter a valid application deadline" }),
-  jobDescription: z.string().min(1, { message: "Please enter a job description" }),
+  // jobDescription: z.string().min(1, { message: "Please enter a job description" }),
   disabilitas: z.boolean({ invalid_type_error: "Disabilities must be a boolean" }),
 });

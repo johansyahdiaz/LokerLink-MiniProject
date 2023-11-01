@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { provinces, jobCategories, experienceOptions, educationOptions } from "../utils/constants/constant";
@@ -8,6 +8,8 @@ import { Toast } from "../utils/swalToast";
 import { useNavigate } from "react-router-dom";
 import { createJobVacancy, updateJobVacancy } from "../utils/apis/jobVacancy/api";
 import { formVacancySchema } from "../utils/apis/jobVacancy/types";
+import ReactQuill from "react-quill"; // Import ReactQuill
+import "react-quill/dist/quill.snow.css";
 
 function VacancyForm() {
   //   const [selectedId, setSelectedId] = useState(0);
@@ -40,11 +42,16 @@ function VacancyForm() {
     },
   });
 
+  const quillRef = useRef(); // Membuat referensi untuk editor Quill
+
   const onSubmit = async (data) => {
     try {
-      console.log("Form submitted");
-      console.log("Data yang dikirim ke server:", data);
+      // Menggunakan getHtml() untuk mendapatkan konten dalam bentuk HTML
+      data.jobDescription = quillRef.current.getEditor().getContents();
+
+      // Mengirim konten HTML ke API
       await createJobVacancy(data);
+
       Toast.fire({ icon: "success", title: "Success added new data" });
       navigate("/profile-dashboard");
     } catch (error) {
@@ -156,11 +163,16 @@ function VacancyForm() {
               {errors.education && <span className="text-error">{errors.education.message}</span>}
             </div>
 
-            <div>
+            <div className="h-fit">
               <label htmlFor="jobDescription" className="block text-sm font-medium">
                 Job Description
               </label>
-              <textarea id="jobDescription" name="jobDescription" {...register("jobDescription")} rows="4" className={`w-full px-4 py-2 border rounded-lg ${errors.jobDescription ? "border-red-500" : ""}`} />
+              <ReactQuill
+                theme="snow"
+                {...register("jobDescription")}
+                ref={quillRef} // Menghubungkan referensi ke editor Quill
+                className={`quill w-full h-fit px-4 py-2 border rounded-lg ${errors.jobDescription ? "border-red-500" : ""}`}
+              />
               {errors.jobDescription && <span className="text-error">{errors.jobDescription.message}</span>}
             </div>
 

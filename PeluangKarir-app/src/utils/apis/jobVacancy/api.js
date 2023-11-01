@@ -66,3 +66,13 @@ export const deleteJobVacancy = async (jobVacancyId) => {
     throw Error("Failed to delete a product");
   }
 };
+
+export const getDetailJobVacancy = async (jobVacancyId) => {
+  try {
+    const response = await axiosWithConfig.get(`/Job/${jobVacancyId}`);
+
+    return response.data;
+  } catch (error) {
+    throw Error("Failed to get a Job Vacancy");
+  }
+};

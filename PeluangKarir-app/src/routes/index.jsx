@@ -7,6 +7,7 @@ import RegisterPage from "../pages/auth/register";
 import VacancyForm from "../pages/formVacancy";
 import Dashboard from "../pages/dashboard";
 import JobCatalog from "../pages/jobCatalog";
+import JobDetailPage from "../pages/jobDetail";
 import { useToken } from "../utils/context/token";
 import { setAxiosConfig } from "../utils/apis/axiosWithConfig";
 
@@ -25,6 +26,10 @@ export default function Router() {
     {
       path: "/job-catalog",
       element: <JobCatalog />,
+    },
+    {
+      path: "/job-details/:jobVacancyId",
+      element: <JobDetailPage />,
     },
     {
       path: "/login",
