@@ -15,7 +15,7 @@ export default function Router() {
   const { token } = useToken();
 
   useEffect(() => {
-    setAxiosConfig("", import.meta.env.VITE_API_ENDPOINT);
+    setAxiosConfig("", "https://65376a24bb226bb85dd33159.mockapi.io/jobVacancy/");
   }, []);
 
   const router = createBrowserRouter([
