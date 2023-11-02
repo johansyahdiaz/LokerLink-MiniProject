@@ -39,15 +39,61 @@ function JobDetailPage() {
     <>
       <Navbar></Navbar>
       <div className="job-detail-container p-6 max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">{jobData.jobTitle}</h1>
-        <p className="text-lg">Company: {jobData.companyName}</p>
-        <p className="text-lg">Application Deadline: {jobData.applicationDeadline}</p>
-        <p className="text-lg">Job Category: {jobData.jobCategory}</p>
-        <p className="text-lg">Job Type: {jobData.jobType}</p>
-        <p className="text-lg">Location: {jobData.jobLocation}</p>
-        <p className="text-lg">Experience: {jobData.experience}</p>
-        <p className="text-lg">Education: {jobData.education}</p>
-        <div className="job-description text-lg mt-4">{parse(jobDescriptionHtml)}</div>
+        <div>
+          <h1 className="text-3xl font-bold mb-4 text-center">
+            {jobData.jobTitle}-{jobData.companyName}
+          </h1>
+        </div>
+        <div>
+          <div className="overflow-x-auto">
+            <table className=" border border-collapse border-transparent">
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Kategori Pekerjaan:</td>
+                  <td className="px-4 py-2">{jobData.jobCategory}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Tipe Kontrak Pekerjaan:</td>
+                  <td className="px-4 py-2">{jobData.jobType}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Jenjang Pendidikan Minimum:</td>
+                  <td className="px-4 py-2">{jobData.education}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Pengalaman Minimum:</td>
+                  <td className="px-4 py-2">{jobData.experience}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Lokasi:</td>
+                  <td className="px-4 py-2">{jobData.jobLocation}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Gaji:</td>
+                  <td className="px-4 py-2">
+                    Rp.{jobData.minSalary} - Rp.{jobData.maxSalary}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-semibold">Application Deadline:</td>
+                  <td className="px-4 py-2">{jobData.applicationDeadline}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="pt-3">
+            <div>
+              <h1 className="text-xl font-bold mb-4 text-center">Deskripsi Lowongan</h1>
+            </div>
+            {parse(jobDescriptionHtml)}
+          </div>
+        </div>
+      </div>
+      <div className="sticky bottom-0 p-2 bg-white z-10 text-center">
+        <button onClick={() => (window.location.href = `mailto:${jobData.companyEmail}`)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Apply Lamaran
+        </button>
       </div>
     </>
   );

@@ -35,7 +35,7 @@ export default function Navbar() {
 
   return (
     <header className="w-full sticky top-0">
-      <nav className="navbar bg-base-100 bg-opacity-100 backdrop-blur-xl shadow-xl">
+      <nav className="navbar bg-base-100 bg-opacity-100 backdrop-blur-xl shadow-xl z-30">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost normal-case text-xl">
             Peluang Karir
@@ -44,10 +44,10 @@ export default function Navbar() {
         <div className="flex-none gap-2">
           <ul className="menu menu-horizontal px-1 items-center">
             <li>
-              <Link to="/job-catalog">Job</Link>
+              <Link to="/job-catalog">Lowongan Pekerjaan</Link>
             </li>
             <li>
-              <Link to="/post-job">Post a Job</Link>
+              <Link to="/ChatAI">AI Chat</Link>
             </li>
             <li>
               {token === "" ? (
@@ -63,7 +63,7 @@ export default function Navbar() {
                     <ul tabIndex={0} className="p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52" style={{ marginTop: "130px" }}>
                       <li>
                         <Link to="/profile-dashboard" className="justify-between">
-                          Profile Dashboard
+                          Profil Dashboard
                         </Link>
                       </li>
                       <li>

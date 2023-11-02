@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Use useNavigate to get the navigation function
 import Navbar from "../components/navbar";
 import { Toast } from "../utils/swalToast";
 import { getSpesificJobVacancy, deleteJobVacancy } from "../utils/apis/jobVacancy/api";
@@ -9,6 +10,7 @@ function Dashboard() {
   const [companyName, setCompanyName] = useState("Nama Perusahaan Anda");
   const [companyDescription, setCompanyDescription] = useState("Deskripsi perusahaan Anda.");
   const [jobs, setJobs] = useState([]);
+  const navigate = useNavigate(); // Get the navigation function
 
   async function fetchData() {
     try {
@@ -51,6 +53,10 @@ function Dashboard() {
     } catch (error) {
       Toast.fire({ icon: "error", title: error.message });
     }
+  };
+
+  const handleEdit = (jobVacancyId) => {
+    navigate(`/vacancy-form/${jobVacancyId}`); // Use navigate to navigate to the correct route
   };
 
   return (
@@ -114,20 +120,21 @@ function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {jobs.map((Job) => (
-                <tr key={Job.jobVacancyId}>
-                  <td>{Job.jobTitle}</td>
-                  <td>{Job.jobLocation}</td>
-                  <td>{Job.jobType}</td>
-                  <td>{Job.applicationDeadline}</td>
+              {jobs.map((job) => (
+                <tr key={job.jobVacancyId}>
+                  <td>{job.jobTitle}</td>
+                  <td>{job.jobLocation}</td>
+                  <td>{job.jobType}</td>
+                  <td>{job.applicationDeadline}</td>
                   <td>
-                    <Link to={`/edit-job/${Job.jobVacancyId}`} className="btn btn-primary mr-2">
+                    <button onClick={() => handleEdit(job.jobVacancyId)} className="btn btn-primary mr-2">
                       Edit
-                    </Link>
-                    <button onClick={() => handleDelete(Job.jobVacancyId)} className="btn btn-danger">
+                    </button>
+
+                    <button onClick={() => handleDelete(job.jobVacancyId)} className="btn btn-danger">
                       Delete
                     </button>
-                    <Link to={`/job-details/${Job.jobVacancyId}`} className="btn btn-secondary ml-2">
+                    <Link to={`/job-details/${job.jobVacancyId}`} className="btn btn-secondary ml-2">
                       View Job Vacancy
                     </Link>
                   </td>

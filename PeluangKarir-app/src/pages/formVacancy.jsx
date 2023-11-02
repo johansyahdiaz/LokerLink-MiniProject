@@ -1,22 +1,24 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { provinces, jobCategories, experienceOptions, educationOptions } from "../utils/constants/constant";
 import Navbar from "../components/navbar";
 import { Toast } from "../utils/swalToast";
-import { useNavigate } from "react-router-dom";
-import { createJobVacancy, updateJobVacancy } from "../utils/apis/jobVacancy/api";
+import { useNavigate, useLocation } from "react-router-dom";
+import { createJobVacancy, updateJobVacancy, getJobVacancyById } from "../utils/apis/jobVacancy/api";
 import { formVacancySchema } from "../utils/apis/jobVacancy/types";
-import ReactQuill from "react-quill"; // Import ReactQuill
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 function VacancyForm() {
-  //   const [selectedId, setSelectedId] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const jobVacancyId = searchParams.get("jobVacancyId");
   const storedUserId = localStorage.getItem("UserId");
   const storedCompanyName = localStorage.getItem("CompanyName");
   const storedCompanyEmail = localStorage.getItem("email");
+  const [jobData, setJobData] = useState(null);
 
   const {
     register,
@@ -42,23 +44,54 @@ function VacancyForm() {
     },
   });
 
-  const quillRef = useRef(); // Membuat referensi untuk editor Quill
+  const quillRef = useRef();
+
+  const [jobDataFetched, setJobDataFetched] = useState(false);
+
+  useEffect(() => {
+    if (jobVacancyId) {
+      const fetchData = async () => {
+        try {
+          const result = await getJobVacancyById(jobVacancyId);
+          setJobData(result);
+
+          setValue("jobTitle", result.jobTitle);
+          setValue("jobCategory", result.jobCategory);
+          setValue("jobType", result.jobType);
+          setValue("jobLocation", result.jobLocation);
+          setValue("minSalary", result.minSalary);
+          setValue("maxSalary", result.maxSalary);
+          setValue("experience", result.experience);
+          setValue("education", result.education);
+          // ...set other fields
+
+          setJobDataFetched(true);
+        } catch (error) {
+          Toast.fire({ icon: "error", title: error.message });
+        }
+      };
+
+      fetchData();
+    }
+  }, [jobVacancyId]);
 
   const onSubmit = async (data) => {
     try {
-      // Menggunakan getHtml() untuk mendapatkan konten dalam bentuk HTML
       data.jobDescription = quillRef.current.getEditor().getContents();
 
-      // Mengirim konten HTML ke API
-      await createJobVacancy(data);
+      if (jobVacancyId) {
+        await updateJobVacancy(jobVacancyId, data);
+        Toast.fire({ icon: "success", title: "Job vacancy updated successfully" });
+      } else {
+        await createJobVacancy(data);
+        Toast.fire({ icon: "success", title: "Job vacancy created successfully" });
+      }
 
-      Toast.fire({ icon: "success", title: "Success added new data" });
       navigate("/profile-dashboard");
     } catch (error) {
       Toast.fire({ icon: "error", title: error.message });
     }
   };
-
   return (
     <>
       <Navbar />

@@ -7,9 +7,13 @@ function JobCard({ job, onBookmarkClick }) {
       <div className="flex">
         <div className="min-w-[70%]">
           <Link to={`/job-details/${job.jobVacancyId}`}>
-            <h2 className="text-xl font-semibold">{job.jobTitle}</h2>
-            <p className="text-sm text-gray-600 mb-2">{job.jobType}</p>
-            <p className="text-base font-semibold text-primary">${job.salary}</p>
+            <h2 className="text-xl font-medium">{job.jobTitle}</h2>
+            <p className="text-xs text-gray-600 mb-2">
+              {job.jobType} | {job.jobCategory}
+            </p>
+            <p className="text-base font-semibold text-primary">
+              Rp.{job.minSalary}-Rp.{job.maxSalary}
+            </p>
             <p className="text-sm text-gray-600">{job.companyName}</p>
             <p className="text-sm text-gray-600">{job.jobLocation}</p>
           </Link>

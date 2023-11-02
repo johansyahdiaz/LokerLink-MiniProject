@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"; // Perlu mengimpor `useEffect`
 import Navbar from "../components/navbar";
+import Footer from "../components/footerbar";
 import CategoryCard from "../components/categoryCard";
 import { jobCategories, provinces } from "../utils/constants/constant.js";
 import JobCard from "../components/jobCard"; // Import JobCard
@@ -47,10 +48,10 @@ function Homepage() {
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img src="./hero_img.png" className="max-w-sm rounded-lg shadow-2xl" alt="Hero" />
           <div>
-            <h1 className="text-5xl font-bold">Find a job that suits your interest & skills.</h1>
+            <h1 className="text-5xl font-bold">Temukan pekerjaan yang sesuai dengan minat & keahlian Anda.</h1>
             <p className="py-6">
-              Welcome to Pluang Career, the job search platform connecting you with outstanding career opportunities. Discover your dream job, explore diverse industries, and achieve success in a bright future with us. Join now to transform
-              your career!
+              Selamat datang di Pluang Karir, platform pencarian kerja yang menghubungkan Anda dengan peluang karir yang luar biasa. Temukan pekerjaan impian Anda, jelajahi beragam industri, dan raih kesuksesan di masa depan yang cerah
+              bersama kami. Bergabunglah sekarang untuk mengubah karir Anda!
             </p>
             <div className="join">
               <div>
@@ -103,6 +104,7 @@ function Homepage() {
           </Link>
         </div>
       </div>
+      <Footer></Footer>
     </>
   );
 }

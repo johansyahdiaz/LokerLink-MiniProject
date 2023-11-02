@@ -8,6 +8,7 @@ import VacancyForm from "../pages/formVacancy";
 import Dashboard from "../pages/dashboard";
 import JobCatalog from "../pages/jobCatalog";
 import JobDetailPage from "../pages/jobDetail";
+import ChatApp from "../pages/chatPage";
 import { useToken } from "../utils/context/token";
 import { setAxiosConfig } from "../utils/apis/axiosWithConfig";
 
@@ -38,6 +39,10 @@ export default function Router() {
     {
       path: "/register",
       element: <RegisterPage />,
+    },
+    {
+      path: "/ChatAI",
+      element: <ChatApp />,
     },
     {
       path: "/vacancy-form",
