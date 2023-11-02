@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"; // Perlu mengimpor `useEffect`
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footerbar";
 import CategoryCard from "../components/categoryCard";
 import { jobCategories, provinces } from "../utils/constants/constant.js";
-import JobCard from "../components/jobCard"; // Import JobCard
-import { getJobVacancy } from "../utils/apis/jobVacancy/api"; // Import fungsi getJobVacancy
+import JobCard from "../components/jobCard";
+import { getJobVacancy } from "../utils/apis/jobVacancy/api";
 import { Link } from "react-router-dom";
 import { Toast } from "../utils/swalToast";
 
@@ -12,13 +12,11 @@ function Homepage() {
   const [showMore, setShowMore] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [featuredJobs, setFeaturedJobs] = useState([]); // State untuk menyimpan jobCard terbaru
+  const [featuredJobs, setFeaturedJobs] = useState([]);
 
   useEffect(() => {
-    // Menggunakan useEffect untuk mengambil 10 jobCard terbaru saat halaman dimuat
     async function fetchFeaturedJobs() {
       try {
-        // Ganti "filters" dengan parameter yang sesuai untuk mendapatkan jobCard terbaru
         const result = await getJobVacancy({ limit: 12, sort: "desc" });
         setFeaturedJobs(result);
       } catch (error) {
@@ -91,11 +89,7 @@ function Homepage() {
       <div className="jobs-card mt-20">
         <h2 className="text-center text-2xl">Featured Jobs</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style={{ padding: "0px 85px" }}>
-          {Array.isArray(featuredJobs) ? (
-            featuredJobs.map((job) => <JobCard key={job.jobVacancyId} job={job} />)
-          ) : (
-            <p>No featured jobs available</p> // Tambahkan pesan jika data tidak tersedia
-          )}
+          {Array.isArray(featuredJobs) ? featuredJobs.map((job) => <JobCard key={job.jobVacancyId} job={job} />) : <p>No featured jobs available</p>}
         </div>
 
         <div className="text-center py-5">

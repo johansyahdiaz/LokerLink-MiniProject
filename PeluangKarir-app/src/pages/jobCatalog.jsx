@@ -119,7 +119,7 @@ function JobCatalog() {
                   value={filters.jobCategory}
                   onChange={(e) => {
                     setFilters({ ...filters, jobCategory: e.target.value });
-                    applyFilters(); // Panggil applyFilters saat filter berubah
+                    applyFilters();
                   }}
                   className="px-4 py-2 border rounded-lg"
                 >

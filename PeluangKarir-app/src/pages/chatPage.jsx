@@ -27,13 +27,19 @@ const ChatApp = () => {
 
     try {
       const response = await processMessageToChatGPT([...messages, newMessage]);
-      const content = response.choices[0]?.message?.content;
-      if (content) {
-        const chatGPTResponse = {
-          message: content,
-          sender: "ChatGPT",
-        };
-        setMessages((prevMessages) => [...prevMessages, chatGPTResponse]);
+      if (response && response.choices) {
+        const content = response.choices[0]?.message?.content;
+        if (content) {
+          const chatGPTResponse = {
+            message: content,
+            sender: "ChatGPT",
+          };
+          setMessages((prevMessages) => [...prevMessages, chatGPTResponse]);
+        } else {
+          console.error("No 'content' property in API response.");
+        }
+      } else {
+        console.error("Invalid API response:", response);
       }
     } catch (error) {
       console.error("Error processing message:", error);
@@ -48,22 +54,31 @@ const ChatApp = () => {
       return { role, content: messageObject.message };
     });
 
-    // Include a system message as a prompt to set the context.
     const apiRequestBody = {
       model: "gpt-3.5-turbo",
       messages: [{ role: "system", content: "You are an expert in job openings." }, ...apiMessages],
     };
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(apiRequestBody),
-    });
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + API_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(apiRequestBody),
+      });
 
-    return response.json();
+      const responseData = await response.json();
+
+      // Add debugging to log the response data
+      console.log("API Response Data:", responseData);
+
+      return responseData;
+    } catch (error) {
+      console.error("Error processing message:", error);
+      return error; // You may want to return an error object here for further handling
+    }
   }
 
   return (

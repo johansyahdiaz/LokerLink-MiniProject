@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom"; // Use useNavigate to get the navigation function
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import { Toast } from "../utils/swalToast";
 import { getSpesificJobVacancy, deleteJobVacancy } from "../utils/apis/jobVacancy/api";
@@ -10,7 +10,7 @@ function Dashboard() {
   const [companyName, setCompanyName] = useState("Nama Perusahaan Anda");
   const [companyDescription, setCompanyDescription] = useState("Deskripsi perusahaan Anda.");
   const [jobs, setJobs] = useState([]);
-  const navigate = useNavigate(); // Get the navigation function
+  const navigate = useNavigate();
 
   async function fetchData() {
     try {
@@ -56,7 +56,7 @@ function Dashboard() {
   };
 
   const handleEdit = (jobVacancyId) => {
-    navigate(`/vacancy-form/${jobVacancyId}`); // Use navigate to navigate to the correct route
+    navigate(`/vacancy-form/${jobVacancyId}`);
   };
 
   return (

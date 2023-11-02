@@ -200,12 +200,7 @@ function VacancyForm() {
               <label htmlFor="jobDescription" className="block text-sm font-medium">
                 Job Description
               </label>
-              <ReactQuill
-                theme="snow"
-                {...register("jobDescription")}
-                ref={quillRef} // Menghubungkan referensi ke editor Quill
-                className={`quill w-full h-fit px-4 py-2 border rounded-lg ${errors.jobDescription ? "border-red-500" : ""}`}
-              />
+              <ReactQuill theme="snow" {...register("jobDescription")} ref={quillRef} className={`quill w-full h-fit px-4 py-2 border rounded-lg ${errors.jobDescription ? "border-red-500" : ""}`} />
               {errors.jobDescription && <span className="text-error">{errors.jobDescription.message}</span>}
             </div>
 

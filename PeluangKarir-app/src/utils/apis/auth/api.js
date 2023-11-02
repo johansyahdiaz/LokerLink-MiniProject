@@ -5,7 +5,6 @@ export const userRegister = async (data) => {
     if (existingUser) {
       reject({ message: "email already exists", payload: null });
     } else {
-      // Simpan data yang diterima ke localStorage
       localStorage.setItem("UserId", data.userId);
       localStorage.setItem("companyName", data.companyName);
       localStorage.setItem("email", data.email);
