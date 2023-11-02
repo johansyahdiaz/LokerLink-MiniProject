@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import { Link } from "react-router-dom";
 
-function JobCard({ job, onBookmarkClick }) {
+function JobCard({ job }) {
   return (
     <div className="bg-white p-4 shadow-md rounded-lg  ">
       <div className="flex">
@@ -18,11 +19,11 @@ function JobCard({ job, onBookmarkClick }) {
             <p className="text-sm text-gray-600">{job.jobLocation}</p>
           </Link>
         </div>
-        <div className="min-w-[30%] flex justify-end items-end h-40 p-4 relative">
+        {/* <div className="min-w-[30%] flex justify-end items-end h-40 p-4 relative">
           <button onClick={() => onBookmarkClick(job)} className="mt-4 btn btn-secondary absolute bottom-4 right-4">
             <i className="fa-regular fa-bookmark"></i>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

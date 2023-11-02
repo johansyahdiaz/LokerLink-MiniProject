@@ -99,7 +99,7 @@ function Dashboard() {
                 Save
               </button>
             ) : (
-              <button onClick={handleEditProfile} className="btn btn-secondary">
+              <button onClick={handleEditProfile} className="btn btn-primary">
                 Edit Profile
               </button>
             )}
@@ -131,7 +131,7 @@ function Dashboard() {
                       Edit
                     </button>
 
-                    <button onClick={() => handleDelete(job.jobVacancyId)} className="btn btn-danger">
+                    <button onClick={() => handleDelete(job.jobVacancyId)} className="btn btn-error">
                       Delete
                     </button>
                     <Link to={`/job-details/${job.jobVacancyId}`} className="btn btn-secondary ml-2">

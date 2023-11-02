@@ -38,6 +38,7 @@ export default function Navbar() {
       <nav className="navbar bg-base-100 bg-opacity-100 backdrop-blur-xl shadow-xl z-30">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost normal-case text-xl">
+            <img src="./logo.svg" width={"50"} height={"50"} alt="gambar logo" />
             Peluang Karir
           </Link>
         </div>

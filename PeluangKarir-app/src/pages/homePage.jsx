@@ -19,7 +19,7 @@ function Homepage() {
     async function fetchFeaturedJobs() {
       try {
         // Ganti "filters" dengan parameter yang sesuai untuk mendapatkan jobCard terbaru
-        const result = await getJobVacancy({ limit: 10, sort: "desc" });
+        const result = await getJobVacancy({ limit: 12, sort: "desc" });
         setFeaturedJobs(result);
       } catch (error) {
         Toast.fire({ icon: "error", title: error.message });
@@ -98,7 +98,7 @@ function Homepage() {
           )}
         </div>
 
-        <div className="text-center">
+        <div className="text-center py-5">
           <Link to="/job-catalog">
             <button className="btn btn-primary mt-4 mx-auto">{showMore ? "Show Less" : "Show More"}</button>
           </Link>
