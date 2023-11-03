@@ -71,7 +71,7 @@ function JobCatalog() {
               </select>
             </div>
             <div>
-              <button className="btn apply-filter" onClick={applyFilters}>
+              <button className="btn btn-primary apply-filter" onClick={applyFilters}>
                 Aplikasi Filter
               </button>
             </div>

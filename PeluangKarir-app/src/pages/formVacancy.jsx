@@ -20,7 +20,7 @@ function VacancyForm() {
   const storedCompanyName = localStorage.getItem("CompanyName");
   const storedCompanyEmail = localStorage.getItem("email");
 
-  const [jobData, setJobData] = useState(null); // State untuk data pekerjaan
+  const [jobData, setJobData] = useState(null);
 
   const {
     register,

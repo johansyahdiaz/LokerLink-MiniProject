@@ -135,7 +135,7 @@ function Dashboard() {
                     <button onClick={() => handleDelete(job.jobVacancyId)} className="btn btn-error">
                       Delete
                     </button>
-                    <Link to={`/job-details/${job.jobVacancyId}`} className="btn btn-secondary ml-2">
+                    <Link to={`/job-details/${job.jobVacancyId}`} className="btn btn-primary ml-2">
                       View Job Vacancy
                     </Link>
                   </td>
