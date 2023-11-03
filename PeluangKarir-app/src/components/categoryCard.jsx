@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -6,9 +5,9 @@ function CategoryCard({ categories, showMore }) {
   const categoriesToShow = showMore ? categories : categories.slice(0, 10);
 
   return (
-    <div className="category-list flex flex-wrap items-center justify-evenly gap-y-4 m-4 ">
+    <div className="category-list grid grid-cols-5 gap-4 m-4">
       {categoriesToShow.map((category) => (
-        <Link to={`/job-catalog?category=${category.title}`} key={category.id} className="card w-72 bg-base-100 shadow-xl">
+        <Link to={`/job-catalog?category=${category.title}`} key={category.id} className="card bg-base-100 shadow-xl">
           <figure className="px-10 pt-10 pb-5">
             <i className={category.logo}></i>
           </figure>

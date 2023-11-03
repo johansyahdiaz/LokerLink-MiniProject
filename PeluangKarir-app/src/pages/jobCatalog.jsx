@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import JobCard from "../components/jobCard";
-import { getJobVacancy } from "../utils/apis/jobVacancy/api";
-import { provinces, jobCategories, experienceOptions, educationOptions } from "../utils/constants/constant";
 import Navbar from "../components/navbar";
 import { Toast } from "../utils/swalToast";
 import { Link, useLocation } from "react-router-dom";
+import { getFilteredJobVacancies } from "../utils/apis/jobVacancy/api";
+import { provinces, jobCategories, experienceOptions, educationOptions } from "../utils/constants/constant";
 
 function JobCatalog() {
   const location = useLocation();
@@ -17,39 +17,39 @@ function JobCatalog() {
   const [jobVacancies, setJobVacancies] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
-    jobCategory: categoryFilter,
     jobType: "",
+    jobCategory: categoryFilter,
     jobLocation: locationFilter,
-    salary: "",
     experience: "",
     education: "",
     disabilitas: false,
   });
   const [searchText, setSearchText] = useState(initialSearchText);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
   const applyFilters = () => {
+    fetchData(filters);
+  };
+
+  const resetFilters = () => {
+    setFilters({
+      jobCategory: "",
+      jobType: "",
+      jobLocation: "",
+      experience: "",
+      education: "",
+      disabilitas: false,
+    });
+    setSearchText("");
     fetchData();
   };
 
-  async function fetchData() {
+  async function fetchData(filters = {}) {
     try {
-      const result = await getJobVacancy({
-        searchText,
-        locationFilter: filters.jobLocation,
-        jobCategory: filters.jobCategory,
-        jobType: filters.jobType,
-        salary: filters.salary,
-        experience: filters.experience,
-        education: filters.education,
-        disabilitas: filters.disabilitas,
-      });
-
+      const result = await getFilteredJobVacancies(filters);
       setJobVacancies(result);
     } catch (error) {
       Toast.fire(error.message);
@@ -57,36 +57,10 @@ function JobCatalog() {
   }
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const result = await getJobVacancy();
-        setJobVacancies(result);
-      } catch (error) {
-        Toast.fire(error.message);
-      }
+    if (!jobVacancies.length) {
+      fetchData(filters);
     }
-
-    fetchData();
-  }, []);
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  const filteredJobs = Array.isArray(jobVacancies)
-    ? jobVacancies
-        .filter((job) => {
-          return (
-            (!searchText || job.jobTitle.toLowerCase().includes(searchText.toLowerCase())) &&
-            (!filters.jobCategory || job.jobCategory === filters.jobCategory) &&
-            (!filters.jobType || job.jobType === filters.jobType) &&
-            (!filters.jobLocation || job.jobLocation === filters.jobLocation) &&
-            (!filters.experience || job.experience === filters.experience) &&
-            (!filters.education || job.education === filters.education) &&
-            (!filters.disabilitas || job.disabilitas)
-          );
-        })
-        .slice(indexOfFirstItem, indexOfLastItem)
-    : [];
+  }, [filters]);
 
   return (
     <>
@@ -99,7 +73,7 @@ function JobCatalog() {
           <div>
             <div className="form-control">
               <div className="input-group">
-                <input type="text" placeholder="Cari lowongan ......" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="input input-bordered" />
+                <input type="text" placeholder="Cari lowongan ....." value={searchText} onChange={(e) => setSearchText(e.target.value)} className="input input-bordered" />
               </div>
             </div>
           </div>
@@ -110,19 +84,18 @@ function JobCatalog() {
             <button className="btn filter-toggle" onClick={toggleFilter}>
               {isFilterOpen ? "Sembunyikan Filter" : "Tampilkan Filter"}
             </button>
+            <button className="btn apply-filter" onClick={applyFilters}>
+              Aplikasi Filter
+            </button>
+            <button className="btn reset-filter" onClick={resetFilters}>
+              Reset Filter
+            </button>
           </div>
 
           {isFilterOpen && (
             <div className="flex space-x-4 mb-4 p-5 border-solid border-2">
               <div className="flex gap-2">
-                <select
-                  value={filters.jobCategory}
-                  onChange={(e) => {
-                    setFilters({ ...filters, jobCategory: e.target.value });
-                    applyFilters();
-                  }}
-                  className="px-4 py-2 border rounded-lg"
-                >
+                <select value={filters.jobCategory} onChange={(e) => setFilters({ ...filters, jobCategory: e.target.value })} className="px-4 py-2 border rounded-lg">
                   <option value="">Pilih Kategori</option>
                   {jobCategories.map((category) => (
                     <option key={category.id} value={category.title}>
@@ -176,22 +149,11 @@ function JobCatalog() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 min-h-[50%] py-8">
-          {filteredJobs.map((job) => (
+          {jobVacancies.map((job) => (
             <Link key={job.jobVacancyId} to={`/job/${job.jobVacancyId}`}>
               <JobCard job={job} />
             </Link>
           ))}
-        </div>
-
-        <div className="pagination py-10">
-          <div className="join grid grid-cols-2">
-            <button className="join-item btn btn-outline" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
-              Halaman Sebelumnya
-            </button>
-            <button className="join-item btn btn-outline" onClick={() => setCurrentPage(currentPage + 1)} disabled={indexOfLastItem >= jobVacancies.length}>
-              Halaman Selanjutnya
-            </button>
-          </div>
         </div>
       </div>
     </>

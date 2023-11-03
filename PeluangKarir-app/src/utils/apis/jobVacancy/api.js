@@ -85,3 +85,15 @@ export const getJobVacancyById = async (jobVacancyId) => {
     throw Error("Failed to get specific Job Vacancy");
   }
 };
+
+export const getFilteredJobVacancies = async (filters) => {
+  try {
+    const response = await axiosWithConfig.get("/Job", {
+      params: filters,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw Error("Failed to get filtered Job Vacancy");
+  }
+};

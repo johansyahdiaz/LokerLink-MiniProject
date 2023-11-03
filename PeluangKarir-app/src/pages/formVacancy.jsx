@@ -46,7 +46,7 @@ function VacancyForm() {
 
   const quillRef = useRef();
 
-  const [jobDataFetched, setJobDataFetched] = useState(false);
+  // const [jobDataFetched, setJobDataFetched] = useState(false);
 
   useEffect(() => {
     if (jobVacancyId) {
@@ -55,17 +55,17 @@ function VacancyForm() {
           const result = await getJobVacancyById(jobVacancyId);
           setJobData(result);
 
-          setValue("jobTitle", result.jobTitle);
-          setValue("jobCategory", result.jobCategory);
-          setValue("jobType", result.jobType);
-          setValue("jobLocation", result.jobLocation);
-          setValue("minSalary", result.minSalary);
-          setValue("maxSalary", result.maxSalary);
-          setValue("experience", result.experience);
-          setValue("education", result.education);
-          // ...set other fields
+          // setValue("jobTitle", result.jobTitle);
+          // setValue("jobCategory", result.jobCategory);
+          // setValue("jobType", result.jobType);
+          // setValue("jobLocation", result.jobLocation);
+          // setValue("minSalary", result.minSalary);
+          // setValue("maxSalary", result.maxSalary);
+          // setValue("experience", result.experience);
+          // setValue("education", result.education);
+          // // ...set other fields
 
-          setJobDataFetched(true);
+          // setJobDataFetched(true);
         } catch (error) {
           Toast.fire({ icon: "error", title: error.message });
         }

@@ -34,7 +34,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="w-full sticky top-0">
+    <header className="w-full sticky top-0 z-[2]">
       <nav className="navbar bg-base-100 bg-opacity-100 backdrop-blur-xl shadow-xl z-30">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost normal-case text-xl">
