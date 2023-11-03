@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { provinces, jobCategories, experienceOptions, educationOptions } from "../utils/constants/constant";
@@ -15,10 +15,12 @@ function VacancyForm() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const jobVacancyId = searchParams.get("jobVacancyId");
+
   const storedUserId = localStorage.getItem("UserId");
   const storedCompanyName = localStorage.getItem("CompanyName");
   const storedCompanyEmail = localStorage.getItem("email");
-  const [jobData, setJobData] = useState(null);
+
+  const [jobData, setJobData] = useState(null); // State untuk data pekerjaan
 
   const {
     register,
@@ -30,42 +32,25 @@ function VacancyForm() {
       UserId: storedUserId,
       companyName: storedCompanyName,
       companyEmail: storedCompanyEmail,
-      jobTitle: "",
-      jobCategory: "",
-      jobType: "",
-      jobLocation: "",
-      minSalary: 0,
-      maxSalary: 0,
-      experience: "",
-      education: "",
-      jobDescription: "",
-      applicationDeadline: "",
-      disabilitas: false,
     },
   });
 
   const quillRef = useRef();
 
-  // const [jobDataFetched, setJobDataFetched] = useState(false);
+  const [, setJobDataFetched] = useState(false);
 
   useEffect(() => {
     if (jobVacancyId) {
       const fetchData = async () => {
         try {
           const result = await getJobVacancyById(jobVacancyId);
-          setJobData(result);
 
-          // setValue("jobTitle", result.jobTitle);
-          // setValue("jobCategory", result.jobCategory);
-          // setValue("jobType", result.jobType);
-          // setValue("jobLocation", result.jobLocation);
-          // setValue("minSalary", result.minSalary);
-          // setValue("maxSalary", result.maxSalary);
-          // setValue("experience", result.experience);
-          // setValue("education", result.education);
-          // // ...set other fields
+          if (result) {
+            setJobData(result);
+            quillRef.current.getEditor().setContents(result.jobDescription);
+          }
 
-          // setJobDataFetched(true);
+          setJobDataFetched(true);
         } catch (error) {
           Toast.fire({ icon: "error", title: error.message });
         }
@@ -73,6 +58,7 @@ function VacancyForm() {
 
       fetchData();
     }
+    console.log(jobVacancyId);
   }, [jobVacancyId]);
 
   const onSubmit = async (data) => {
@@ -92,6 +78,7 @@ function VacancyForm() {
       Toast.fire({ icon: "error", title: error.message });
     }
   };
+
   return (
     <>
       <Navbar />
@@ -103,7 +90,7 @@ function VacancyForm() {
               <label htmlFor="jobTitle" className="block text-sm font-medium">
                 Job Title
               </label>
-              <input type="text" id="jobTitle" name="jobTitle" {...register("jobTitle")} className={`w-full px-4 py-2 border rounded-lg ${errors.jobTitle ? "border-red-500" : ""}`} />
+              <input type="text" id="jobTitle" name="jobTitle" {...register("jobTitle")} defaultValue={jobData ? jobData.jobTitle : ""} className={`w-full px-4 py-2 border rounded-lg ${errors.jobTitle ? "border-red-500" : ""}`} />
               {errors.jobTitle && <span className="text-error">{errors.jobTitle.message}</span>}
             </div>
 
@@ -111,7 +98,7 @@ function VacancyForm() {
               <label htmlFor="jobCategory" className="block text-sm font-medium">
                 Job Category
               </label>
-              <select id="jobCategory" name="jobCategory" {...register("jobCategory")} className={`w-full px-4 py-2 border rounded-lg ${errors.jobCategory ? "border-red-500" : ""}`}>
+              <select id="jobCategory" name="jobCategory" {...register("jobCategory")} defaultValue={jobData ? jobData.jobCategory : ""} className={`w-full px-4 py-2 border rounded-lg ${errors.jobCategory ? "border-red-500" : ""}`}>
                 <option value="">Select Category</option>
                 {jobCategories.map((category) => (
                   <option key={category.id} value={category.title}>
@@ -126,7 +113,7 @@ function VacancyForm() {
               <label htmlFor="jobType" className="block text-sm font-medium">
                 Job Type
               </label>
-              <select id="jobType" name="jobType" {...register("jobType")} className={`w-full px-4 py-2 border rounded-lg ${errors.jobType ? "border-red-500" : ""}`}>
+              <select id="jobType" name="jobType" {...register("jobType")} defaultValue={jobData ? jobData.jobType : ""} className={`w-full px-4 py-2 border rounded-lg ${errors.jobType ? "border-red-500" : ""}`}>
                 <option value="">Select Type</option>
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
@@ -139,7 +126,7 @@ function VacancyForm() {
               <label htmlFor="jobLocation" className="block text-sm font-medium">
                 Job Location (Provinsi)
               </label>
-              <select id="jobLocation" name="jobLocation" {...register("jobLocation")} className={`w-full px-4 py-2 border rounded-lg ${errors.jobLocation ? "border-red-500" : ""}`}>
+              <select id="jobLocation" name="jobLocation" {...register("jobLocation")} defaultValue={jobData ? jobData.jobLocation : ""} className={`w-full px-4 py-2 border rounded-lg ${errors.jobLocation ? "border-red-500" : ""}`}>
                 <option value="">Select Location</option>
                 {provinces.map((province) => (
                   <option key={province} value={province}>
@@ -154,7 +141,7 @@ function VacancyForm() {
               <label htmlFor="minSalary" className="block text-sm font-medium">
                 Minimum Salary
               </label>
-              <input type="number" id="minSalary" name="minSalary" {...register("minSalary")} className={`w-full px-4 py-2 border rounded-lg ${errors.minSalary ? "border-red-500" : ""}`} />
+              <input type="number" id="minSalary" name="minSalary" {...register("minSalary")} defaultValue={jobData ? jobData.minSalary : 0} className={`w-full px-4 py-2 border rounded-lg ${errors.minSalary ? "border-red-500" : ""}`} />
               {errors.minSalary && <span className="text-error">{errors.minSalary.message}</span>}
             </div>
 
@@ -162,7 +149,7 @@ function VacancyForm() {
               <label htmlFor="maxSalary" className="block text-sm font-medium">
                 Maximum Salary
               </label>
-              <input type="number" id="maxSalary" name="maxSalary" {...register("maxSalary")} className={`w-full px-4 py-2 border rounded-lg ${errors.maxSalary ? "border-red-500" : ""}`} />
+              <input type="number" id="maxSalary" name="maxSalary" {...register("maxSalary")} defaultValue={jobData ? jobData.maxSalary : 0} className={`w-full px-4 py-2 border rounded-lg ${errors.maxSalary ? "border-red-500" : ""}`} />
               {errors.maxSalary && <span className="text-error">{errors.maxSalary.message}</span>}
             </div>
 
@@ -170,7 +157,7 @@ function VacancyForm() {
               <label htmlFor="experience" className="block text-sm font-medium">
                 Experience
               </label>
-              <select id="experience" name="experience" {...register("experience")} className={`w-full px-4 py-2 border rounded-lg ${errors.experience ? "border-red-500" : ""}`}>
+              <select id="experience" name="experience" {...register("experience")} defaultValue={jobData ? jobData.experience : ""} className={`w-full px-4 py-2 border rounded-lg ${errors.experience ? "border-red-500" : ""}`}>
                 <option value="">Select Experience</option>
                 {experienceOptions.map((exp) => (
                   <option key={exp} value={exp}>
@@ -185,7 +172,7 @@ function VacancyForm() {
               <label htmlFor="education" className="block text-sm font-medium">
                 Education
               </label>
-              <select id="education" name="education" {...register("education")} className={`w-full px-4 py-2 border rounded-lg ${errors.education ? "border-red-500" : ""}`}>
+              <select id="education" name="education" {...register("education")} defaultValue={jobData ? jobData.education : ""} className={`w-full px-4 py-2 border rounded-lg ${errors.education ? "border-red-500" : ""}`}>
                 <option value="">Select Education</option>
                 {educationOptions.map((edu) => (
                   <option key={edu} value={edu}>
@@ -208,12 +195,19 @@ function VacancyForm() {
               <label htmlFor="applicationDeadline" className="block text-sm font-medium">
                 Application Deadline
               </label>
-              <input type="date" id="applicationDeadline" name="applicationDeadline" {...register("applicationDeadline")} className={`w-full px-4 py-2 border rounded-lg ${errors.applicationDeadline ? "border-red-500" : ""}`} />
+              <input
+                type="date"
+                id="applicationDeadline"
+                name="applicationDeadline"
+                {...register("applicationDeadline")}
+                defaultValue={jobData ? jobData.applicationDeadline : ""}
+                className={`w-full px-4 py-2 border rounded-lg ${errors.applicationDeadline ? "border-red-500" : ""}`}
+              />
               {errors.applicationDeadline && <span className="text-error">{errors.applicationDeadline.message}</span>}
             </div>
 
             <div>
-              <input type="checkbox" id="disabilitas" name="disabilitas" {...register("disabilitas")} />
+              <input type="checkbox" id="disabilitas" name="disabilitas" {...register("disabilitas")} defaultChecked={jobData ? jobData.disabilitas : false} />
               <label htmlFor="disabilitas" className="text-sm font-medium ml-2">
                 Disabilitas dapat mendaftar
               </label>

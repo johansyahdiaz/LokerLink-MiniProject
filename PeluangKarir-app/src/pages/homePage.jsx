@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footerbar";
 import CategoryCard from "../components/categoryCard";
-import { jobCategories, provinces } from "../utils/constants/constant.js";
+import { jobCategories } from "../utils/constants/constant.js";
 import JobCard from "../components/jobCard";
 import { getJobVacancy } from "../utils/apis/jobVacancy/api";
 import { Link } from "react-router-dom";
@@ -10,8 +10,8 @@ import { Toast } from "../utils/swalToast";
 
 function Homepage() {
   const [showMore, setShowMore] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
+  // const [searchText, setSearchText] = useState("");
+  // const [selectedLocation, setSelectedLocation] = useState("");
   const [featuredJobs, setFeaturedJobs] = useState([]);
 
   useEffect(() => {
@@ -31,13 +31,13 @@ function Homepage() {
     setShowMore(!showMore);
   };
 
-  const handleSearch = () => {
-    const searchQuery = searchText ? `searchText=${searchText}` : "";
-    const locationQuery = selectedLocation ? `location=${selectedLocation}` : "";
+  // const handleSearch = () => {
+  //   const searchQuery = searchText ? `searchText=${searchText}` : "";
+  //   const locationQuery = selectedLocation ? `location=${selectedLocation}` : "";
 
-    const queryParams = [searchQuery, locationQuery].filter(Boolean).join("&");
-    window.location.href = `/job-catalog?${queryParams}`;
-  };
+  //   const queryParams = [searchQuery, locationQuery].filter(Boolean).join("&");
+  //   window.location.href = `/job-catalog?${queryParams}`;
+  // };
 
   return (
     <>
@@ -51,27 +51,6 @@ function Homepage() {
               Selamat datang di Pluang Karir, platform pencarian kerja yang menghubungkan Anda dengan peluang karir yang luar biasa. Temukan pekerjaan impian Anda, jelajahi beragam industri, dan raih kesuksesan di masa depan yang cerah
               bersama kami. Bergabunglah sekarang untuk mengubah karir Anda!
             </p>
-            <div className="join">
-              <div>
-                <div>
-                  <input className="input input-bordered join-item" placeholder="Search" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
-                </div>
-              </div>
-              <select className="select select-bordered join-item" value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
-                <option value="">Select Location</option>
-                {provinces.map((province) => (
-                  <option key={province} value={province}>
-                    {province}
-                  </option>
-                ))}
-              </select>
-
-              <div className="indicator">
-                <button className="btn btn-primary join-item" onClick={handleSearch}>
-                  Search
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import { Toast } from "../utils/swalToast";
 import { getSpesificJobVacancy, deleteJobVacancy } from "../utils/apis/jobVacancy/api";
@@ -10,7 +10,7 @@ function Dashboard() {
   const [companyName, setCompanyName] = useState("Nama Perusahaan Anda");
   const [companyDescription, setCompanyDescription] = useState("Deskripsi perusahaan Anda.");
   const [jobs, setJobs] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   async function fetchData() {
     try {
@@ -55,9 +55,10 @@ function Dashboard() {
     }
   };
 
-  const handleEdit = (jobVacancyId) => {
-    navigate(`/vacancy-form/${jobVacancyId}`);
-  };
+  // const handleEdit = (jobVacancyId) => {
+  //   const queryParams = jobVacancyId ? `jobVacancyId=${jobVacancyId}` : "";
+  //   window.location.href = `/vacancy-form?${queryParams}`;
+  // };
 
   return (
     <>
@@ -127,9 +128,9 @@ function Dashboard() {
                   <td>{job.jobType}</td>
                   <td>{job.applicationDeadline}</td>
                   <td>
-                    <button onClick={() => handleEdit(job.jobVacancyId)} className="btn btn-primary mr-2">
+                    {/* <button onClick={() => handleEdit(job.jobVacancyId)} className="btn btn-primary mr-2">
                       Edit
-                    </button>
+                    </button> */}
 
                     <button onClick={() => handleDelete(job.jobVacancyId)} className="btn btn-error">
                       Delete
